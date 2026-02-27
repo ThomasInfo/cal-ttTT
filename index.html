@@ -672,8 +672,16 @@
     function pad2(n){ return String(n).padStart(2,"0"); }
     function paceFromMs(v_ms){
       const secPerKm = 1000 / v_ms;
-      const min = Math.floor(secPerKm / 60);
-      const sec = Math.round(secPerKm - min*60);
+
+      let min = Math.floor(secPerKm / 60);
+      let sec = Math.round(secPerKm - min * 60);
+
+      // correction si arrondi donne 60 secondes
+      if (sec === 60){
+        min += 1;
+        sec = 0;
+      }
+
       return `${min}:${pad2(sec)} /km`;
     }
 
