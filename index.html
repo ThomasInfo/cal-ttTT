@@ -13,7 +13,7 @@
       <p class="cs-subtitle">
         Bravo d'avoir réalisé tes tests d'effort ! <br>
         Voici mon calculateur pour déterminer ta vitesse critique en course, et ta puissance critique sur chacun des ergos. <br>
-        Je souhaite que mes recommandations d'entraînement te soient personnalisées et optimales. <br>
+        Je souhaite que mes recommandations d'entraînement te soient <b>personnalisées</b> et <b>optimales</b>. <br>
         C'est pourquoi tu as dû réaliser ces tests. <br>
         Une fois tes données rentrées, tu peux directement copier ta grille personnalisée, tes zones d'intensités ou même télécharger le rapport. <br>
         Le respect de tes intensités d'entraînement sera déterminant dans ta progression. <br>
@@ -310,11 +310,14 @@
       <p class="cs-footText">
         La vitesse critique (VC) — et son équivalent en puissance sur ergomètre (PC) — est l’un des repères les mieux validés pour
         prescrire des intensités d’entraînement de façon <b>personnalisée, précise et reproductible</b>. <br>
+        <br>
         Contrairement aux approches classiques (VMA, %FCmax, %VO₂max), la VC/PC s’appuie sur une relation robuste entre <b>durée</b> et <b>performance</b>,
         ce qui augmente la stabilité du repère et réduit le biais du protocole. <br>
+        <br>
         Sur le plan physiologique, VC/PC correspond à une frontière de fatigue : en-dessous, l’état est relativement stable ; au-dessus, la dérive
         (VO₂, perturbations métaboliques) s’accélère et limite rapidement le temps de maintien. Identifier ce seuil rend
         la prescription <b>rigoureuse</b> et cohérente d’une semaine à l’autre. <br>
+        <br>
         Références scientifiques : <br>
         <i>“The ‘Critical Power’ Concept: Applications to Sports Performance with a Focus on Intermittent High-Intensity Exercise”</i>, <br>
         <i>“Critical Power: An Important Fatigue Threshold in Exercise Physiology”</i>, <br>
@@ -642,11 +645,12 @@
   (function(){
     const percGrid = [0.85, 0.90, 0.95, 1.00, 1.02, 1.05];
     const zones = [
-      { name:"Récupération", lo:0.00, hi:0.85 },
-      { name:"Endurance fondamentale", lo:0.85, hi:0.90 },
-      { name:"Tempo", lo:0.90, hi:0.95 },
-      { name:"Deuxième seuil aérobie", lo:0.95, hi:1.02 },
-      { name:"VO₂max", lo:1.02, hi:1.05 },
+      { name:"Récupération", lo:0.00, hi:0.70 },
+      { name:"Endurance fondamentale", lo:0.70, hi:0.82 },
+      { name:"Tempo", lo:0.82, hi:0.98 },
+      { name:"Deuxième seuil aérobie", lo:0.98, hi:1.02 },
+      { name:"VO₂max", lo:1.02, hi:1.17 },
+      { name:"Anaérobie", lo:1.17, hi:Infinity },
     ];
 
     const $ = (id) => document.getElementById(id);
@@ -745,8 +749,19 @@
 
         return {
           zone: z.name,
-          speed: (z.lo===0 ? `0 – ${hiKmh} km/h` : `${loKmh} – ${hiKmh} km/h`),
-          pace: (z.lo===0 ? `≥ ${hiPace}` : `${hiPace} – ${loPace}`)
+          speed:
+            z.hi === Infinity
+              ? `> ${loKmh} km/h`
+              : z.lo===0
+                ? `0 – ${hiKmh} km/h`
+                : `${loKmh} – ${hiKmh} km/h`,
+
+          pace:
+            z.hi === Infinity
+              ? `< ${loPace}`
+              : z.lo===0
+                ? `≥ ${hiPace}`
+                : `${loPace} – ${hiPace}`
         };
       });
 
@@ -793,8 +808,20 @@
 
         return {
           zone: z.name,
-          watts: (z.lo===0 ? `0 – ${hiW} W` : `${loW} – ${hiW} W`),
-          split: (z.lo===0 ? `≥ ${hiSplit}` : `${hiSplit} – ${loSplit}`)
+
+          watts:
+            z.hi === Infinity
+              ? `> ${loW} W`
+              : z.lo===0
+                ? `0 – ${hiW} W`
+                : `${loW} – ${hiW} W`,
+
+          split:
+            z.hi === Infinity
+              ? `< ${loSplit}`
+              : z.lo===0
+                ? `≥ ${hiSplit}`
+                : `${loSplit} – ${hiSplit}`
         };
       });
 
