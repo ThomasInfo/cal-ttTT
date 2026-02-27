@@ -1,0 +1,1163 @@
+<div class="cs-shell" id="cs_app">
+  <div class="cs-header cs-hoverGrow">
+    <div class="cs-kicker">Le calculateur de Tomtom</div>
+    <h3 class="cs-title">Vitesse critique (Course) & Puissance critique (Ergos)</h3>
+    <p class="cs-subtitle">
+      Bravo d'avoir réalisé tes tests d'effort ! <br>
+      Voici mon calculateur pour déterminer ta vitesse critique en course, et ta puissance critique sur chacun des ergos. <br>
+      Je souhaite que mes recommandations d'entraînement te soient personnalisées et optimales. <br>
+      C'est pourquoi tu as dû réaliser ces tests. <br>
+      Une fois tes données rentrées, tu peux directement copier ta grille personnalisée, tes zones d'intensités ou même télécharger le rapport. <br>
+      Le respect de tes intensités d'entraînement sera déterminant dans ta progression. <br>
+      Maintenant nous pouvons commencer sérieusement ta préparation pour atteindre ton objectif 🤝<br>
+      <br>
+            Tomtom <br>
+    </p>
+  </div>
+
+  <div class="cs-tabs" role="tablist" aria-label="Choix discipline">
+    <button class="cs-tab is-active" data-tab="run" type="button">Course</button>
+    <button class="cs-tab" data-tab="ski" type="button">SkiErg</button>
+    <button class="cs-tab" data-tab="row" type="button">Rameur</button>
+    <button class="cs-tab" data-tab="bike" type="button">BikeErg</button>
+  </div>
+
+  <!-- RUN -->
+  <section class="cs-panel" id="panel_run">
+    <div class="cs-sectionTitle cs-hoverGrow">Course (VC + D’)</div>
+
+    <div class="cs-grid3">
+      <label class="cs-field">
+        <span class="cs-label">Distance en 3 minutes (mètres)</span>
+        <input class="cs-input" id="run_d3" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+
+      <label class="cs-field">
+        <span class="cs-label">Distance en 7 minutes (mètres)</span>
+        <input class="cs-input" id="run_d7" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+
+      <label class="cs-field">
+        <span class="cs-label">Distance en 12 minutes (mètres)</span>
+        <input class="cs-input" id="run_d12" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+    </div>
+
+    <button class="cs-btn" id="run_calc" type="button">Calculer</button>
+    <div class="cs-error" id="run_err"></div>
+
+    <div class="cs-out" id="run_out" style="display:none;">
+      <div class="cs-cards2">
+        <!-- PRIMARY CARD (VC) -->
+        <div class="cs-card cs-hoverGrow cs-primaryCard" id="run_vc_card">
+          <div class="cs-cardKicker cs-primaryKicker">Vitesse critique (VC)</div>
+          <div class="cs-cardValue" id="run_vc_kmh"></div>
+          <div class="cs-cardMeta" id="run_vc_pace"></div>
+        </div>
+
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">D’ (réserve au-dessus de VC)</div>
+          <div class="cs-cardValue" id="run_dprime"></div>
+          <div class="cs-cardMeta">Ta capacité de travail au dessus de ta vitesse critique.</div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Ma grille d'allure personnalisée</div>
+        <div class="cs-tableWrap" id="run_tableWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="run_copy_grid" type="button">
+            Copier ma grille d’allure personnalisée
+          </button>
+          <div class="cs-toast" id="run_toast_grid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Mes zones d’intensité</div>
+        <div class="cs-tableWrap" id="run_zonesWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="run_copy_zones" type="button">
+            Copier mes zones d’intensité
+          </button>
+          <div class="cs-toast" id="run_toast_zones" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD BUTTON (after zones block) -->
+      <div class="cs-centerBtn">
+        <button class="cs-btn cs-btnPrimaryGradient" id="run_download" type="button">
+          Télécharger mes résultats
+        </button>
+        <div class="cs-toast" id="run_toast_dl" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKI -->
+  <section class="cs-panel" id="panel_ski" style="display:none;">
+    <div class="cs-sectionTitle cs-hoverGrow">SkiErg (PC + W’)</div>
+    <p class="cs-note cs-hoverGrow">Renseigne uniquement la <b>puissance moyenne (W)</b>.</p>
+
+    <div class="cs-grid2">
+      <label class="cs-field">
+        <span class="cs-label">Puissance moyenne sur 7 minutes de SkiErg (W)</span>
+        <input class="cs-input" id="ski_w7" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+      <label class="cs-field">
+        <span class="cs-label">Puissance moyenne sur 12 minutes de SkiErg (W)</span>
+        <input class="cs-input" id="ski_w12" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+    </div>
+
+    <button class="cs-btn" id="ski_calc" type="button">Calculer</button>
+    <div class="cs-error" id="ski_err"></div>
+
+    <div class="cs-out" id="ski_out" style="display:none;">
+      <div class="cs-cards2">
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">Puissance critique (PC)</div>
+          <div class="cs-cardValue" id="ski_cp_w"></div>
+          <div class="cs-cardMeta" id="ski_cp_split"></div>
+        </div>
+
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">W’ (réserve au-dessus de PC)</div>
+          <div class="cs-cardValue" id="ski_wprime"></div>
+          <div class="cs-cardMeta">Capacité de travail au-dessus de PC (J).</div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Ma grille d'allure personnalisée</div>
+        <div class="cs-tableWrap" id="ski_tableWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="ski_copy_grid" type="button">
+            Copier ma grille d’allure personnalisée
+          </button>
+          <div class="cs-toast" id="ski_toast_grid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Mes zones d’intensité</div>
+        <div class="cs-tableWrap" id="ski_zonesWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="ski_copy_zones" type="button">
+            Copier mes zones d’intensités
+          </button>
+          <div class="cs-toast" id="ski_toast_zones" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-centerBtn">
+        <button class="cs-btn cs-btnPrimaryGradient" id="ski_download" type="button">
+          Télécharger mes résultats
+        </button>
+        <div class="cs-toast" id="ski_toast_dl" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROW -->
+  <section class="cs-panel" id="panel_row" style="display:none;">
+    <div class="cs-sectionTitle cs-hoverGrow">Rameur (PC + W’)</div>
+    <p class="cs-note cs-hoverGrow">Renseigne uniquement la <b>puissance moyenne (W)</b>.</p>
+
+    <div class="cs-grid2">
+      <label class="cs-field">
+        <span class="cs-label">Puissance moyenne sur 7 minutes de Rameur (W)</span>
+        <input class="cs-input" id="row_w7" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+      <label class="cs-field">
+        <span class="cs-label">Puissance moyenne sur 12 minutes de Rameur (W)</span>
+        <input class="cs-input" id="row_w12" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+    </div>
+
+    <button class="cs-btn" id="row_calc" type="button">Calculer</button>
+    <div class="cs-error" id="row_err"></div>
+
+    <div class="cs-out" id="row_out" style="display:none;">
+      <div class="cs-cards2">
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">Puissance critique (PC)</div>
+          <div class="cs-cardValue" id="row_cp_w"></div>
+          <div class="cs-cardMeta" id="row_cp_split"></div>
+        </div>
+
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">W’ (réserve au-dessus de PC)</div>
+          <div class="cs-cardValue" id="row_wprime"></div>
+          <div class="cs-cardMeta">En joules (J).</div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Ma grille d'allure personnalisée</div>
+        <div class="cs-tableWrap" id="row_tableWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="row_copy_grid" type="button">
+            Copier ma grille d’allure personnalisée
+          </button>
+          <div class="cs-toast" id="row_toast_grid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Mes zones d’intensité</div>
+        <div class="cs-tableWrap" id="row_zonesWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="row_copy_zones" type="button">
+            Copier mes zones d’intensités
+          </button>
+          <div class="cs-toast" id="row_toast_zones" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-centerBtn">
+        <button class="cs-btn cs-btnPrimaryGradient" id="row_download" type="button">
+          Télécharger mes résultats
+        </button>
+        <div class="cs-toast" id="row_toast_dl" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIKE -->
+  <section class="cs-panel" id="panel_bike" style="display:none;">
+    <div class="cs-sectionTitle cs-hoverGrow">BikeErg (PC + W’)</div>
+    <p class="cs-note cs-hoverGrow">Renseigne uniquement la <b>puissance moyenne (W)</b>.</p>
+
+    <div class="cs-grid2">
+      <label class="cs-field">
+        <span class="cs-label">Puissance moyenne sur 7 minutes de BikeErg (W)</span>
+        <input class="cs-input" id="bike_w7" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+      <label class="cs-field">
+        <span class="cs-label">Puissance moyenne sur 12 minutes de BikeErg (W)</span>
+        <input class="cs-input" id="bike_w12" type="number" min="0" step="1" inputmode="numeric" />
+      </label>
+    </div>
+
+    <button class="cs-btn" id="bike_calc" type="button">Calculer</button>
+    <div class="cs-error" id="bike_err"></div>
+
+    <div class="cs-out" id="bike_out" style="display:none;">
+      <div class="cs-cards2">
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">Puissance critique (PC)</div>
+          <div class="cs-cardValue" id="bike_cp_w"></div>
+          <div class="cs-cardMeta" id="bike_cp_split"></div>
+        </div>
+
+        <div class="cs-card cs-hoverGrow">
+          <div class="cs-cardKicker">W’ (réserve au-dessus de PC)</div>
+          <div class="cs-cardValue" id="bike_wprime"></div>
+          <div class="cs-cardMeta">En joules (J).</div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Ma grille d'allure personnalisée</div>
+        <div class="cs-tableWrap" id="bike_tableWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="bike_copy_grid" type="button">
+            Copier ma grille d’allure personnalisée
+          </button>
+          <div class="cs-toast" id="bike_toast_grid" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-card cs-hoverGrow">
+        <div class="cs-cardKicker">Mes zones d’intensité</div>
+        <div class="cs-tableWrap" id="bike_zonesWrap"></div>
+
+        <div class="cs-centerBtn">
+          <button class="cs-btn cs-btnInline" id="bike_copy_zones" type="button">
+            Copier mes zones d’intensité
+          </button>
+          <div class="cs-toast" id="bike_toast_zones" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="cs-centerBtn">
+        <button class="cs-btn cs-btnPrimaryGradient" id="bike_download" type="button">
+          Télécharger mes résultats
+        </button>
+        <div class="cs-toast" id="bike_toast_dl" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-footnote cs-hoverGrow">
+    <div class="cs-cardKicker">Pourquoi la Vitesse Critique / Puissance Critique est le repère le plus fiable pour recommander des intensités ?</div>
+    <p class="cs-footText">
+      La vitesse critique (VC) — et son équivalent en puissance sur ergomètre (PC) — est l’un des repères les mieux validés pour
+      prescrire des intensités d’entraînement de façon <b>personnalisée, précise et reproductible</b>. <br>
+      Contrairement aux approches classiques (VMA, %FCmax, %VO₂max), la VC/PC s’appuie sur une relation robuste entre <b>durée</b> et <b>performance</b>,
+      ce qui augmente la stabilité du repère et réduit le biais du protocole. <br>
+      Sur le plan physiologique, VC/PC correspond à une frontière de fatigue : en-dessous, l’état est relativement stable ; au-dessus, la dérive
+      (VO₂, perturbations métaboliques) s’accélère et limite rapidement le temps de maintien. Identifier ce seuil rend
+      la prescription <b>rigoureuse</b> et cohérente d’une semaine à l’autre. <br>
+      Références scientifiques : <br>
+      <i>“The ‘Critical Power’ Concept: Applications to Sports Performance with a Focus on Intermittent High-Intensity Exercise”</i>, <br>
+      <i>“Critical Power: An Important Fatigue Threshold in Exercise Physiology”</i>, <br>
+      <i>“Critical power: implications for determination of VO2max and exercise tolerance”</i>. <br>
+    </p>
+  </div>
+</div>
+
+<style>
+  /* Dark premium base */
+  .cs-shell{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    text-align:left;
+    color: rgba(255,255,255,.92);
+    background:
+      radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,.22), transparent 55%),
+      radial-gradient(900px 500px at 90% 20%, rgba(16,185,129,.16), transparent 55%),
+      radial-gradient(700px 500px at 30% 90%, rgba(236,72,153,.12), transparent 55%),
+      linear-gradient(180deg, #0b1020, #070a12 60%, #06080f);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:18px;
+    box-shadow: 0 22px 60px rgba(0,0,0,.45);
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .cs-hoverGrow{
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    transform-origin: center;
+  }
+  .cs-hoverGrow:hover{
+    transform: scale(1.02);
+    filter: brightness(1.06);
+  }
+
+  .cs-header{margin-bottom:36px;}
+  .cs-kicker{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.72);
+    padding:6px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .cs-title{
+    margin:10px 0 6px;
+    font-size:22px;
+    line-height:1.2;
+    letter-spacing:-0.02em;
+  }
+  .cs-subtitle{
+    margin:0;
+    font-size:14px;
+    line-height:1.45;
+    color:rgba(255,255,255,.72);
+  }
+
+  .cs-tabs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:14px 0 12px;
+  }
+  .cs-tab{
+    appearance:none;
+    border:1px solid rgba(255,255,255,.10);
+    background:rgba(255,255,255,.04);
+    color:rgba(255,255,255,.88);
+    padding:10px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:800;
+    font-size:13px;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    box-shadow: 0 10px 22px rgba(0,0,0,.25);
+  }
+  .cs-tab:hover{ transform: scale(1.03); box-shadow: 0 18px 36px rgba(0,0,0,.35); }
+  .cs-tab.is-active{
+    background: linear-gradient(135deg, rgba(99,102,241,.98), rgba(16,185,129,.88));
+    color:#061018;
+    border-color: transparent;
+  }
+
+  .cs-panel{ padding-top: 6px; }
+  .cs-sectionTitle{
+    font-weight:950;
+    font-size:14px;
+    margin:6px 0 10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.85);
+  }
+  .cs-note{
+    margin:0 0 10px;
+    font-size:13px;
+    color:rgba(255,255,255,.70);
+  }
+
+  .cs-grid3{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:12px;
+  }
+  .cs-grid2{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:12px;
+  }
+  @media (max-width: 820px){
+    .cs-grid3{grid-template-columns:1fr;}
+    .cs-grid2{grid-template-columns:1fr;}
+  }
+
+  .cs-label{
+    display:block;
+    font-size:12px;
+    font-weight:900;
+    color:rgba(255,255,255,.74);
+    margin-bottom:6px;
+  }
+  .cs-input{
+    width:100%;
+    padding:12px 12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.25);
+    color: rgba(255,255,255,.92);
+    outline:none;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    font-weight:800;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .cs-input:focus{
+    border-color: rgba(99,102,241,.55);
+    box-shadow: 0 0 0 4px rgba(99,102,241,.20);
+    transform: scale(1.01);
+  }
+
+  .cs-btn{
+    margin-top:12px;
+    width:100%;
+    border:0;
+    border-radius:16px;
+    padding:12px 14px;
+    cursor:pointer;
+    font-weight:950;
+    color:#07101a;
+    background: linear-gradient(135deg, rgba(99,102,241,.98), rgba(16,185,129,.88));
+    box-shadow: 0 18px 40px rgba(0,0,0,.38);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .cs-btn:hover{ transform: scale(1.02); box-shadow: 0 26px 54px rgba(0,0,0,.48); }
+  .cs-btn:active{ transform: scale(0.99); }
+
+  /* NEW: Orange -> Violet primary gradient for download button */
+  .cs-btnPrimaryGradient{
+    background: linear-gradient(135deg, #f97316, #a855f7);
+    color: #0b1020;
+  }
+
+  .cs-btnInline{
+    width: min(560px, 100%);
+    margin: 14px auto 0;
+    display: block;
+  }
+  .cs-centerBtn{ text-align:center; padding-top: 4px; }
+
+  .cs-toast{
+    margin-top:10px;
+    font-size:13px;
+    color: rgba(255,255,255,.78);
+    min-height: 18px;
+  }
+
+  .cs-error{
+    margin-top:10px;
+    color:#ff6b6b;
+    font-weight:900;
+    font-size:13px;
+  }
+
+  .cs-out{ margin-top:14px; display:grid; gap:12px; }
+
+  .cs-cards2{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:12px;
+  }
+  @media (max-width: 820px){
+    .cs-cards2{grid-template-columns:1fr;}
+  }
+
+  .cs-card{
+    background: rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:18px;
+    padding:14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+  }
+
+  /* NEW: highlight VC card with orange-violet gradient */
+  .cs-primaryCard{
+    background: linear-gradient(135deg, rgba(249,115,22,.65), rgba(168,85,247,.55));
+    border: 1px solid rgba(249,115,22,.30);
+    box-shadow: 0 18px 48px rgba(0,0,0,.45);
+    position: relative;
+    overflow: hidden;
+  }
+  .cs-primaryCard:before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    background: radial-gradient(400px 240px at 20% 10%, rgba(249,115,22,.30), transparent 60%),
+                radial-gradient(420px 260px at 80% 30%, rgba(168,85,247,.26), transparent 60%);
+    pointer-events:none;
+  }
+  .cs-primaryCard > *{ position: relative; }
+  .cs-primaryKicker{
+    color: rgba(255,255,255,.88);
+  }
+
+  .cs-cardKicker{
+    font-size:12px;
+    font-weight:950;
+    color:rgba(255,255,255,.62);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .cs-cardValue{
+    font-size:28px;
+    font-weight:980;
+    letter-spacing:-0.02em;
+    margin-bottom:6px;
+  }
+  .cs-cardMeta{
+    font-size:13px;
+    color:rgba(255,255,255,.80);
+    line-height:1.45;
+  }
+
+  .cs-tableWrap{ overflow-x:auto; }
+  .cs-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:13px;
+  }
+  .cs-table th, .cs-table td{
+    padding:10px 10px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    text-align:left;
+    white-space:nowrap;
+  }
+  .cs-table th{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:rgba(255,255,255,.60);
+    background: rgba(255,255,255,.04);
+  }
+  .cs-table tr:last-child td{ border-bottom:0; }
+
+  .cs-footnote{
+    margin-top:14px;
+    background: linear-gradient(135deg, rgba(99,102,241,.14), rgba(16,185,129,.10));
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:18px;
+    padding:14px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+  }
+  .cs-footText{
+    margin:0;
+    font-size:13px;
+    line-height:1.65;
+    color:rgba(255,255,255,.82);
+  }
+
+  /* --- PRINT REPORT STYLES (used in new window) --- */
+  @media print{
+    .no-print{ display:none !important; }
+  }
+</style>
+
+<script>
+(function(){
+  const percGrid = [0.85, 0.90, 0.95, 1.00, 1.02, 1.05];
+  const zones = [
+    { name:"Récupération", lo:0.00, hi:0.85 },
+    { name:"Endurance fondamentale", lo:0.85, hi:0.90 },
+    { name:"Tempo", lo:0.90, hi:0.95 },
+    { name:"Deuxième seuil aérobie", lo:0.95, hi:1.02 },
+    { name:"VO₂max", lo:1.02, hi:1.05 },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+
+  // Tabs
+  function setTab(tab){
+    ["run","ski","row","bike"].forEach(t => {
+      $("panel_"+t).style.display = (t===tab) ? "block" : "none";
+    });
+    document.querySelectorAll(".cs-tab").forEach(btn=>{
+      btn.classList.toggle("is-active", btn.getAttribute("data-tab")===tab);
+    });
+  }
+  document.querySelectorAll(".cs-tab").forEach(btn=>{
+    btn.addEventListener("click", ()=> setTab(btn.getAttribute("data-tab")));
+  });
+
+  function fmt(num, digits=2){ return Number.isFinite(num) ? num.toFixed(digits) : "—"; }
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function paceFromMs(v_ms){
+    const secPerKm = 1000 / v_ms;
+    const min = Math.floor(secPerKm / 60);
+    const sec = Math.round(secPerKm - min*60);
+    return `${min}:${pad2(sec)} /km`;
+  }
+
+  // Concept2: watts = 2.8 / pace^3 (pace sec/m). Return split seconds/500m
+  function split500FromWatts(watts){
+    if (!(watts > 0)) return NaN;
+    const pace = Math.cbrt(2.8 / watts); // sec/m
+    return pace * 500;
+  }
+  function splitTextFromSeconds(sec){
+    if (!Number.isFinite(sec) || sec <= 0) return "—";
+    const m = Math.floor(sec/60);
+    const s = Math.round(sec - m*60);
+    return `${m}:${pad2(s)} /500m`;
+  }
+
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try{
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }catch(err){
+        document.body.removeChild(ta);
+        return false;
+      }
+    }
+  }
+  function toast(id, msg){
+    const el = $(id);
+    el.textContent = msg;
+    setTimeout(()=>{ if (el.textContent === msg) el.textContent = ""; }, 2200);
+  }
+
+  // --- Build tables (grid + zones) ---
+  function buildRunGrid(vc_ms){
+    const rows = percGrid.map(p=>{
+      const v = vc_ms * p;
+      return { pct: Math.round(p*100)+"%", kmh: `${(v*3.6).toPrecision(3)} km/h`, pace: paceFromMs(v) };
+    });
+
+    const html = `
+      <table class="cs-table">
+        <thead><tr><th>% VC</th><th>Vitesse</th><th>Allure</th></tr></thead>
+        <tbody>
+          ${rows.map(r=>`<tr><td><b>${r.pct}</b></td><td>${r.kmh}</td><td>${r.pace}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+    const text = rows.map(r => `${r.pct}\t${r.kmh}\t${r.pace}`).join("\n");
+    return { html, text, rows };
+  }
+
+  function buildRunZones(vc_ms){
+    const rows = zones.map(z=>{
+      const lo = vc_ms * z.lo;
+      const hi = vc_ms * z.hi;
+
+      const loKmh = (z.lo===0) ? "0.00" : (lo*3.6).toPrecision(3);
+      const hiKmh = (hi*3.6).toPrecision(3);
+
+      const loPace = (z.lo===0) ? "—" : paceFromMs(lo);
+      const hiPace = paceFromMs(hi);
+
+      return {
+        zone: z.name,
+        speed: (z.lo===0 ? `0 – ${hiKmh} km/h` : `${loKmh} – ${hiKmh} km/h`),
+        pace: (z.lo===0 ? `≥ ${hiPace}` : `${hiPace} – ${loPace}`)
+      };
+    });
+
+    const html = `
+      <table class="cs-table">
+        <thead><tr><th>Zone</th><th>Plage vitesse</th><th>Plage allure</th></tr></thead>
+        <tbody>
+          ${rows.map(r=>`<tr><td><b>${r.zone}</b></td><td>${r.speed}</td><td>${r.pace}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+    const text = rows.map(r => `${r.zone} : ${r.speed} | ${r.pace}`).join("\n");
+    return { html, text, rows };
+  }
+
+  function buildErgGrid(cp_w){
+    const rows = percGrid.map(p=>{
+      const w = cp_w * p;
+      return { pct: Math.round(p*100)+"%", watts: `${Math.round(w)} W`, split: splitTextFromSeconds(split500FromWatts(w)) };
+    });
+
+    const html = `
+      <table class="cs-table">
+        <thead><tr><th>% PC</th><th>Puissance</th><th>Split</th></tr></thead>
+        <tbody>
+          ${rows.map(r=>`<tr><td><b>${r.pct}</b></td><td>${r.watts}</td><td>${r.split}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+    const text = rows.map(r => `${r.pct}\t${r.watts}\t${r.split}`).join("\n");
+    return { html, text, rows };
+  }
+
+  function buildErgZones(cp_w){
+    const rows = zones.map(z=>{
+      const lo = cp_w * z.lo;
+      const hi = cp_w * z.hi;
+
+      const loW = (z.lo===0) ? 0 : Math.round(lo);
+      const hiW = Math.round(hi);
+
+      const hiSplit = splitTextFromSeconds(split500FromWatts(hi));
+      const loSplit = (z.lo===0) ? "—" : splitTextFromSeconds(split500FromWatts(lo));
+
+      return {
+        zone: z.name,
+        watts: (z.lo===0 ? `0 – ${hiW} W` : `${loW} – ${hiW} W`),
+        split: (z.lo===0 ? `≥ ${hiSplit}` : `${hiSplit} – ${loSplit}`)
+      };
+    });
+
+    const html = `
+      <table class="cs-table">
+        <thead><tr><th>Zone</th><th>Plage watts</th><th>Plage split</th></tr></thead>
+        <tbody>
+          ${rows.map(r=>`<tr><td><b>${r.zone}</b></td><td>${r.watts}</td><td>${r.split}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    `;
+    const text = rows.map(r => `${r.zone} : ${r.watts} | ${r.split}`).join("\n");
+    return { html, text, rows };
+  }
+
+  // RUN: d = VC*t + D'
+  function criticalSpeedFrom3(d3, d7, d12){
+    const t = [180, 420, 720];
+    const d = [d3, d7, d12];
+    const n = 3;
+
+    const sumT = t[0]+t[1]+t[2];
+    const sumD = d[0]+d[1]+d[2];
+    const sumTT = t[0]*t[0] + t[1]*t[1] + t[2]*t[2];
+    const sumTD = t[0]*d[0] + t[1]*d[1] + t[2]*d[2];
+
+    const denom = n*sumTT - sumT*sumT;
+    const vc = (n*sumTD - sumT*sumD) / denom; // m/s
+    const dprime = (sumD - vc*sumT) / n;      // m
+    return { vc, dprime };
+  }
+
+  function validateRun(d3,d7,d12){
+    if (![d3,d7,d12].every(x => Number.isFinite(x) && x > 0)) return "Merci de renseigner 3 distances positives.";
+    if (!(d3 < d7 && d7 < d12)) return "Vérifie la cohérence : d3 < d7 < d12.";
+    const v3 = d3/180;
+    if (v3 > 8.5) return "Valeur très élevée : vérifie que tu as bien mis des mètres.";
+    return "";
+  }
+
+  // --- PDF report (print-to-PDF) ---
+  function reportCSS(){
+    // Compact report style, still premium & consistent
+    return `
+      <style>
+        *{ box-sizing:border-box; }
+        body{
+          margin:0;
+          font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+          color: rgba(255,255,255,.92);
+          background:
+            radial-gradient(1200px 600px at 20% 0%, rgba(99,102,241,.22), transparent 55%),
+            radial-gradient(900px 500px at 90% 20%, rgba(16,185,129,.16), transparent 55%),
+            linear-gradient(180deg, #0b1020, #070a12 60%, #06080f);
+        }
+        .wrap{
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 18px;
+        }
+        .hero{
+          border-radius:18px;
+          border:1px solid rgba(255,255,255,.10);
+          padding: 16px;
+          box-shadow: 0 18px 46px rgba(0,0,0,.42);
+          background: rgba(255,255,255,.04);
+          overflow:hidden;
+          position:relative;
+        }
+        .hero:before{
+          content:"";
+          position:absolute; inset:-2px;
+          background: radial-gradient(480px 260px at 20% 15%, rgba(249,115,22,.22), transparent 60%),
+                      radial-gradient(520px 300px at 80% 25%, rgba(168,85,247,.20), transparent 60%);
+          pointer-events:none;
+        }
+        .hero > *{ position:relative; }
+        .kicker{
+          display:inline-block;
+          padding:6px 10px;
+          border-radius:999px;
+          border:1px solid rgba(255,255,255,.10);
+          background: rgba(255,255,255,.05);
+          font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+          color: rgba(255,255,255,.78);
+        }
+        h1{ margin:10px 0 4px; font-size:22px; letter-spacing:-.02em; }
+        .sub{ margin:0; color:rgba(255,255,255,.72); font-size:13px; line-height:1.45; }
+
+        .grid2{
+          display:grid;
+          grid-template-columns: 1fr 1fr;
+          gap:12px;
+          margin-top:12px;
+        }
+        .card{
+          border-radius:18px;
+          border:1px solid rgba(255,255,255,.10);
+          background: rgba(255,255,255,.04);
+          padding:14px;
+          box-shadow: 0 16px 40px rgba(0,0,0,.35);
+        }
+        .primary{
+          background: linear-gradient(135deg, rgba(249,115,22,.60), rgba(168,85,247,.50));
+          border-color: rgba(249,115,22,.28);
+        }
+        .ck{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.68); font-weight:950; margin-bottom:10px; }
+        .val{ font-size:28px; font-weight:980; letter-spacing:-.02em; margin-bottom:6px; }
+        .meta{ font-size:13px; color:rgba(255,255,255,.78); line-height:1.45; }
+
+        .section{
+          margin-top:12px;
+          border-radius:18px;
+          border:1px solid rgba(255,255,255,.10);
+          background: rgba(255,255,255,.04);
+          padding:14px;
+          box-shadow: 0 16px 40px rgba(0,0,0,.35);
+        }
+        .tableWrap{ overflow:hidden; border-radius:14px; border:1px solid rgba(255,255,255,.10); }
+        table{
+          width:100%;
+          border-collapse:collapse;
+          font-size:13px;
+        }
+        th, td{
+          padding:10px 10px;
+          border-bottom:1px solid rgba(255,255,255,.08);
+          text-align:left;
+          white-space:nowrap;
+        }
+        th{
+          font-size:12px;
+          text-transform:uppercase;
+          letter-spacing:.12em;
+          background: rgba(255,255,255,.04);
+          color:rgba(255,255,255,.62);
+        }
+        tr:last-child td{ border-bottom:0; }
+
+        .printHint{
+          margin-top:10px;
+          font-size:12px;
+          color: rgba(255,255,255,.70);
+        }
+        .no-print{ margin-top: 12px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+        .btn{
+          border:0;
+          cursor:pointer;
+          border-radius:16px;
+          padding:12px 14px;
+          font-weight:950;
+          background: linear-gradient(135deg, #f97316, #a855f7);
+          color:#0b1020;
+          min-width: 280px;
+          box-shadow: 0 18px 40px rgba(0,0,0,.38);
+        }
+        .btn2{
+          border:1px solid rgba(255,255,255,.12);
+          background: rgba(255,255,255,.06);
+          color: rgba(255,255,255,.92);
+          min-width: 280px;
+        }
+        @media print{
+          body{ background:#fff !important; color:#000 !important; }
+          .wrap{ max-width: none; }
+          .no-print{ display:none !important; }
+          .hero, .card, .section{ box-shadow:none !important; }
+        }
+      </style>
+    `;
+  }
+
+  function openReportAndPrint({ title, primaryLabel, primaryValue, primaryMeta, secondaryLabel, secondaryValue, secondaryMeta, gridHTML, zonesHTML }){
+    const now = new Date();
+    const dateStr = now.toLocaleString();
+
+    const html = `
+      <!doctype html>
+      <html>
+      <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <title>Résultats - ${title}</title>
+        ${reportCSS()}
+      </head>
+      <body>
+        <div class="wrap">
+          <div class="hero">
+            <div class="kicker">Calculateur de Tomtom - Résumé des résultats</div>
+            <h1>${title}</h1>
+            <p class="sub">
+              Généré le ${dateStr}.<br>
+              Ce rapport donne ta vitesse/puissance critique, ta grille d'allure personnalisée et tes zones d’intensité.</p>
+          </div>
+
+          <div class="grid2">
+            <div class="card primary">
+              <div class="ck">${primaryLabel}</div>
+              <div class="val">${primaryValue}</div>
+              <div class="meta">${primaryMeta || ""}</div>
+            </div>
+            <div class="card">
+              <div class="ck">${secondaryLabel}</div>
+              <div class="val">${secondaryValue}</div>
+              <div class="meta">${secondaryMeta || ""}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="ck">Ma grille d'allure personnalisée</div>
+            <div class="tableWrap">${gridHTML}</div>
+          </div>
+
+          <div class="section">
+            <div class="ck">Mes zones d’intensité</div>
+            <div class="tableWrap">${zonesHTML}</div>
+          </div>
+
+          <div class="printHint">
+            Dans la fenêtre d’impression, choisis “Enregistrer en PDF”.<br>
+            Bon entraînement à toi !
+          </div>
+
+          <div class="no-print">
+            <button class="btn" onclick="window.print()">Imprimer / Enregistrer en PDF</button>
+            <button class="btn btn2" onclick="window.close()">Fermer</button>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const w = window.open("", "_blank");
+    if (!w){
+      return false;
+    }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+
+    // Optional: auto-open print dialog (some browsers block it unless user-initiated; click still initiated)
+    setTimeout(()=>{ try{ w.focus(); w.print(); }catch(e){} }, 350);
+    return true;
+  }
+
+  // --- RUN copy/download state ---
+  let runCopy = { grid:"", zones:"", report:null };
+
+  $("run_calc").addEventListener("click", ()=>{
+    $("run_err").textContent = "";
+    $("run_out").style.display = "none";
+
+    const d3 = Number($("run_d3").value);
+    const d7 = Number($("run_d7").value);
+    const d12 = Number($("run_d12").value);
+
+    const msg = validateRun(d3,d7,d12);
+    if (msg){ $("run_err").textContent = msg; return; }
+
+    const { vc, dprime } = criticalSpeedFrom3(d3,d7,d12);
+    if (!Number.isFinite(vc) || vc <= 0){
+      $("run_err").textContent = "Impossible de calculer (valeurs incohérentes).";
+      return;
+    }
+
+    const vcKmh = `${fmt(vc*3.6,2)} km/h`;
+    const vcPace = `≈ ${paceFromMs(vc)} (allure critique)`;
+
+    $("run_vc_kmh").textContent = vcKmh;
+    $("run_vc_pace").textContent = vcPace;
+    $("run_dprime").textContent = `${Math.round(dprime)} m`;
+
+    const grid = buildRunGrid(vc);
+    const zt = buildRunZones(vc);
+
+    $("run_tableWrap").innerHTML = grid.html;
+    $("run_zonesWrap").innerHTML = zt.html;
+
+    runCopy.grid = `Ma grille d’allure personnalisée (Course)\n%VC\tVitesse\tAllure\n${grid.text}`;
+    runCopy.zones = `Mes zones d’intensité (Course)\n${zt.text}`;
+
+    // Store report content (use same table markup as on page)
+    runCopy.report = {
+      title: "Course — Vitesse critique & zones",
+      primaryLabel: "Vitesse critique (VC)",
+      primaryValue: vcKmh,
+      primaryMeta: vcPace,
+      secondaryLabel: "D’ (réserve au-dessus de VC)",
+      secondaryValue: `${Math.round(dprime)} m`,
+      secondaryMeta: "Capacité de travail au-dessus de VC",
+      gridHTML: grid.html,
+      zonesHTML: zt.html
+    };
+
+    $("run_out").style.display = "grid";
+  });
+
+  $("run_copy_grid").addEventListener("click", async ()=>{
+    const ok = await copyText(runCopy.grid || "Calcule d’abord tes résultats.");
+    toast("run_toast_grid", ok ? "Grille copiée ✅" : "Copie impossible (navigateur).");
+  });
+
+  $("run_copy_zones").addEventListener("click", async ()=>{
+    const ok = await copyText(runCopy.zones || "Calcule d’abord tes résultats.");
+    toast("run_toast_zones", ok ? "Zones copiées ✅" : "Copie impossible (navigateur).");
+  });
+
+  $("run_download").addEventListener("click", ()=>{
+    if (!runCopy.report){
+      toast("run_toast_dl", "Calcule d’abord tes résultats.");
+      return;
+    }
+    const ok = openReportAndPrint(runCopy.report);
+    toast("run_toast_dl", ok ? "Fenêtre PDF ouverte ✅" : "Pop-up bloquée : autorise les fenêtres.");
+  });
+
+  // --- ERG: CP from fixed durations 7' and 12' ---
+  const t7 = 7 * 60;
+  const t12 = 12 * 60;
+
+  function cpFromTwoFixed(p7, p12){
+    const w7 = p7 * t7;
+    const w12 = p12 * t12;
+    const cp = (w12 - w7) / (t12 - t7);
+    const wprime = w7 - cp * t7;
+    return { cp, wprime };
+  }
+  function validateErg(p7,p12){
+    if (!(Number.isFinite(p7) && p7 > 0 && Number.isFinite(p12) && p12 > 0)) return "Merci de renseigner 2 puissances moyennes positives.";
+    return "";
+  }
+
+  function wireErg(prefix, labelTitle){
+    let copy = { grid:"", zones:"", report:null };
+
+    $(prefix+"_calc").addEventListener("click", ()=>{
+      $(prefix+"_err").textContent = "";
+      $(prefix+"_out").style.display = "none";
+
+      const p7 = Number($(prefix+"_w7").value);
+      const p12 = Number($(prefix+"_w12").value);
+
+      const msg = validateErg(p7,p12);
+      if (msg){ $(prefix+"_err").textContent = msg; return; }
+
+      const { cp, wprime } = cpFromTwoFixed(p7,p12);
+      if (!Number.isFinite(cp) || cp <= 0){
+        $(prefix+"_err").textContent = "Impossible de calculer PC (valeurs incohérentes).";
+        return;
+      }
+
+      const cpW = `${Math.round(cp)} W`;
+      const cpSplit = `≈ ${splitTextFromSeconds(split500FromWatts(cp))} (split critique estimé)`;
+
+      $(prefix+"_cp_w").textContent = cpW;
+      $(prefix+"_cp_split").textContent = cpSplit;
+      $(prefix+"_wprime").textContent = `${Math.round(wprime)} J`;
+
+      const grid = buildErgGrid(cp);
+      const zt = buildErgZones(cp);
+
+      $(prefix+"_tableWrap").innerHTML = grid.html;
+      $(prefix+"_zonesWrap").innerHTML = zt.html;
+
+      copy.grid = `Ma grille d’allure personnalisée (${labelTitle})\n%PC\tWatts\tSplit/500m\n${grid.text}`;
+      copy.zones = `Mes zones d’intensité (${labelTitle})\n${zt.text}`;
+
+      copy.report = {
+        title: `${labelTitle} — Puissance critique & zones`,
+        primaryLabel: "Puissance critique (PC)",
+        primaryValue: cpW,
+        primaryMeta: cpSplit,
+        secondaryLabel: "W’ (réserve au-dessus de PC)",
+        secondaryValue: `${Math.round(wprime)} J`,
+        secondaryMeta: "Capacité de travail au-dessus de PC",
+        gridHTML: grid.html,
+        zonesHTML: zt.html
+      };
+
+      $(prefix+"_out").style.display = "grid";
+    });
+
+    $(prefix+"_copy_grid").addEventListener("click", async ()=>{
+      const ok = await copyText(copy.grid || "Calcule d’abord tes résultats.");
+      toast(prefix+"_toast_grid", ok ? "Grille copiée ✅" : "Copie impossible (navigateur).");
+    });
+
+    $(prefix+"_copy_zones").addEventListener("click", async ()=>{
+      const ok = await copyText(copy.zones || "Calcule d’abord tes résultats.");
+      toast(prefix+"_toast_zones", ok ? "Zones copiées ✅" : "Copie impossible (navigateur).");
+    });
+
+    $(prefix+"_download").addEventListener("click", ()=>{
+      if (!copy.report){
+        toast(prefix+"_toast_dl", "Calcule d’abord tes résultats.");
+        return;
+      }
+      const ok = openReportAndPrint(copy.report);
+      toast(prefix+"_toast_dl", ok ? "Fenêtre PDF ouverte ✅" : "Pop-up bloquée : autorise les fenêtres.");
+    });
+  }
+
+  wireErg("ski", "SkiErg");
+  wireErg("row", "Rameur");
+  wireErg("bike", "BikeErg");
+
+  setTab("run");
+})();
+</script>
